@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <div class="container">
+    <h1>Thời tiết Hà Nội</h1>
+    <div id="weather">Đang tải dữ liệu...</div>
+  </div>
+
+  <script>
+    const latitude = 21.0278;   // Hà Nội
+    const longitude = 105.8342;
+
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relative_humidity_2m`;
+
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        const temperature = data.hourly?.temperature_2m[0] ?? "N/A";
+        const humidity = data.hourly?.relative_humidity_2m[0] ?? "N/A";
+        document.getElementById("weather").innerHTML = 
+          `Nhiệt độ: ${temperature} °C, Độ ẩm: ${humidity} %`;
+      })
+      .catch(err => {
+        document.getElementById("weather").innerText = "Lỗi khi lấy dữ liệu";
+        console.error(err);
+      });
+  </script>
+</body>
+</html>
